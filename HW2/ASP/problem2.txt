@@ -1,0 +1,26 @@
+% lives(X, Y) - X lives in Y
+% citizen(X, Y) - X is a citizen of Y
+% diplomat(X, Y) - X is a diplomat of Y
+
+country(usa).
+country(italy).
+
+% American citizens normally live in the United States
+lives(X, Y) :- citizen(X, Y), not ab(d_lives(X, Y)), not -lives(X,Y).
+
+% American diplomats may or may not live in the United States
+ab(d_lives(X, Y)) :- diplomat(X, Y).
+
+% John, Miriam, and Caleb are American citizens.
+citizen(john, usa).
+citizen(miriam, usa).
+citizen(caleb, usa).
+
+% John lives in Italy
+lives(john, italy).
+
+% Miriam is an American diplomat
+diplomat(miriam, usa).
+
+% Everyone lives in only one country
+- lives(X, C1) :- country(C1), lives(X, C2), C1 != C2.

@@ -1,0 +1,100 @@
+% person(X) - X is a person
+person(male1).
+person(male2).
+person(male3).
+person(male4).
+person(male5).
+person(male6).
+person(male7).
+person(male8).
+person(female1).
+person(female2).
+person(female3).
+person(female4).
+person(female5).
+person(female6).
+person(female7).
+person(female8).
+person(female9).
+person(female10).
+
+sex(male).
+sex(female).
+
+% sex_of(X, Y) - the sex of X is Y
+sex_of(male1, male).
+sex_of(male2, male).
+sex_of(male3, male).
+sex_of(male4, male).
+sex_of(male5, male).
+sex_of(male6, male).
+sex_of(male7, male).
+sex_of(male8, male).
+sex_of(female1, female).
+sex_of(female2, female).
+sex_of(female3, female).
+sex_of(female4, female).
+sex_of(female5, female).
+sex_of(female6, female).
+sex_of(female7, female).
+sex_of(female8, female).
+sex_of(female9, female).
+sex_of(female10, female).
+
+% supplied code about family relationships
+married(male1, female1). % male1 and female1 are married
+mother(female1, male2). % female1 is the mother of male2
+father(male1, male2). % male1 is the father of male2
+mother(female1, male3).
+father(male1, male3).
+mother(female1, female2).
+father(male1, female2).
+married(male2, female3).
+mother(female3, male4).
+father(male2, male4).
+mother(female3, male8).
+father(male2, male8).
+married(male3, female4).
+mother(female4, female5).
+father(male3, female5).
+mother(female4, male5).
+father(male3, male5).
+married(male6, female2).
+married(male4, female6).
+mother(female6, female7).
+father(male4, female7).
+mother(female6, male7).
+father(male4, male7).
+married(male8, female8).
+mother(female8, female9).
+father(male8, female9).
+married(male7, female10).
+
+% married(X, Y) is symmetric
+married(X, Y) :- married(Y, X).
+
+% parent(X, Y) - X is a parent of Y
+parent(X, Y) :- father(X, Y), person(X), person(Y).
+parent(X, Y) :- mother(X, Y), person(X), person(Y).
+
+% brother(X, Y) - X is a brother of Y
+brother(X, Y) :- parent(Z, X), parent(Z, Y), X != Y, sex_of(X, male).
+
+% sister(X, Y) - X is a sister of Y
+sister(X, Y) :- parent(Z, X), parent(Z, Y), X != Y, sex_of(X, female).
+
+% uncle(X, Y) - X is an uncle of Y
+uncle(X, Y) :- parent(Z, Y), brother(X, Z).
+uncle(X, Y) :- parent(Z, Y), sister(W, Z), married(X, W).
+
+% aunt(X, Y) - X is an aunt of Y
+aunt(X, Y) :- parent(Z, Y), sister(X, Z).
+aunt(X, Y) :- parent(Z, Y), brother(W, Z), married(X, W).
+
+
+% great_uncle(X, Y) - X is a great uncle to Y
+great_uncle(X, Y) :- uncle(X, Z), parent(Z, Y).
+
+% great_aunt(X, Y) - X is a great aunt to Y
+great_aunt(X, Y) :- aunt(X, Z), parent(Z, Y).
+
